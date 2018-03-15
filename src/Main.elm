@@ -45,11 +45,11 @@ init =
 play : Cmd Msg
 play =
   let
-    minimum = 1
-    maximum = 99
-    total = 10
+    min = 1
+    max = 99
+    num = 10
   in
-    Random.generate Play <| Random.list total (Random.int minimum maximum)
+    Random.generate Play <| Random.list num (Random.int min max)
 
 -- Update
 
@@ -78,11 +78,7 @@ update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
     NewGame -> (model, play)
-    Play ls ->
-      let
-        t = Tree.fromList ls
-      in
-        (Model t <| Tree.inOrder t, Cmd.none)
+    Play ls -> let t = Tree.fromList ls in (Model t <| Tree.inOrder t, Cmd.none)
     Correct -> ({ model | guesses = Tree.Empty }, Cmd.none)
     Lower   ->
       case model.guesses of
@@ -95,7 +91,7 @@ update msg model =
 
 -- Subscriptions
 
-{-| TODO document
+{-| Subscriptions for guessing game.
 
 In general, this function describes which event sources to subscribe to for a
 given state. -}
@@ -111,53 +107,26 @@ playing the guessing game, and controls.
 In general, this function describes how to render the app for a given state. -}
 view : Model -> Html.Html Msg
 view model =
-  Html.div
-  [ Attributes.style [ ("font-family", "Garamond, serif")
-                     , ("font-size", "12pt")
-                     , ("text-align", "justify")
-                     , ("width", "500px")
-                     , ("margin-left", "auto")
-                     , ("margin-right", "auto") ] ]
-  [ Html.h1 [] [ Html.text "Guessing Game Web Application" ]
-  , Html.p
-    []
-    [ Html.text
-        """
-          Welcome to the guessing game web application! The guessing game is
-          played between a user and the computer. The user chooses a number
-          from a list of numbers and the computer tries to guess the users
-          number. To play the game, please follow these instructions:
-        """ ]
-  , Html.ol
-    []
-    [ Html.li [] [ Html.text <| "Choose an integer from the list: "
-                 , Html.pre
-                   []
-                   [ Html.code
-                     []
-                     [ Html.text <| toString model.choices ] ] ]
-    , Html.li [] [ Html.text "The computer will guess your number. Answer if the guess is correct." ]
-    , Html.li [] [ Html.text "Repeat the previous step until the computer guesses correctly." ] ]
-  , Html.button [ Events.onClick NewGame ] [ Html.text "New Game" ]
-  , game model ]
-
-{-| Helper function for rendering the app. -}
-game : Model -> Html.Html Msg
-game model =
-  case model.guesses of
-    Tree.Empty                        ->
-      Html.p [] [ Html.text "Good game!" ]
-    Tree.Node n Tree.Empty Tree.Empty ->
-      Html.p [] [ Html.text <| "Your number is " ++ toString n ]
-    Tree.Node n _ _                   ->
-      Html.p [] [ Html.text <| "Is your number " ++ toString n ++ "?"
-                , control Correct "Correct"
-                , control Lower "Lower"
-                , control Higher "Higher" ]
-
-{-| Helper function for making a game control button. -}
-control : Msg -> String -> Html.Html Msg
-control msg text =
-  Html.button
-  [ Attributes.style [("margin-left", "10px")], Events.onClick msg ]
-  [ Html.text text ]
+  let
+    game =
+      case model.guesses of
+        Tree.Empty                        -> [ Html.text "Good game!" ]
+        Tree.Node n Tree.Empty Tree.Empty ->
+          [ Html.text <| "Your number is " ++ toString n ]
+        Tree.Node n _ _                   ->
+          [ Html.text <| "Is your number " ++ toString n ++ "?"
+          , Html.button [ Events.onClick Correct ] [ Html.text "Correct" ]
+          , Html.button [ Events.onClick Lower ] [ Html.text "Lower" ]
+          , Html.button [ Events.onClick Higher ] [ Html.text "Higher" ] ]
+  in
+    Html.div
+      []
+      [ Html.p
+          []
+          [ Html.text "Choose a number from the following list:"
+          , Html.br [] []
+          , Html.text (toString model.choices) ]
+      , Html.button
+          [ Events.onClick NewGame ]
+          [ Html.text "New Game" ]
+      , Html.p [] game ]
