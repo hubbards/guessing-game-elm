@@ -1,25 +1,4 @@
-module Tree exposing
-  ( Tree(..)
-  , leaf
-  , foldr
-  , tfold
-  , map
-  , Zipper
-  , Context(..)
-  , enter
-  , exit
-  , left
-  , right
-  , depth
-  , preOrder
-  , postOrder
-  , inOrder
-  , findMax
-  , findMin
-  , isBst
-  , isElement
-  , insert
-  , fromList )
+module Tree exposing (..)
 
 {-| This is a module for a binary tree data structure. Binary trees are common
 data structures for learning about functional programming. This module is meant
