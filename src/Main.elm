@@ -41,16 +41,6 @@ init : (Model, Cmd Msg)
 init =
   (Model Tree.Empty [], play)
 
-{-| A command to guess numbers from a new list of choices. -}
-play : Cmd Msg
-play =
-  let
-    min = 1
-    max = 99
-    num = 10
-  in
-    Random.generate Play <| Random.list num (Random.int min max)
-
 -- Update
 
 {-| This data type represents messages for playing the guessing game.
@@ -88,6 +78,16 @@ update msg model =
       case model.guesses of
         Tree.Node _ _ r -> ({ model | guesses = r }, Cmd.none)
         _               -> (model, Cmd.none)
+
+{-| A command to guess numbers from a new list of choices. -}
+play : Cmd Msg
+play =
+  let
+    min = 1
+    max = 99
+    num = 10
+  in
+    Random.generate Play <| Random.list num (Random.int min max)
 
 -- Subscriptions
 
