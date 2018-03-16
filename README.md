@@ -32,10 +32,10 @@ We can run the Elm reactor with the `elm-reactor` command.
 The guessing game is played between a user and the computer. The user chooses a
 number from a list of numbers and the computer tries to guess the users number.
 
-When the computer makes a guess, click on one of the buttons labeled "Lower",
-"Higher", or "Correct".
+When the computer makes a guess, click on the "lower", "higher", or "correct"
+buttons.
 
-A new game can be started by clicking on the button labeled "New Game".
+A new game can be started by clicking on the "new game" button.
 
 [elm]: http://elm-lang.org/
 [test]: https://github.com/elm-community/elm-test
