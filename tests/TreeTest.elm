@@ -8,13 +8,15 @@ import Test
 import Tree
 
 
-
--- TODO add more tests
-
-
+{-| Unit test suite for Tree module.
+-}
 suite : Test.Test
 suite =
     Test.describe "Tree" [ depth ]
+
+
+
+-- TODO add more tests
 
 
 depth : Test.Test
