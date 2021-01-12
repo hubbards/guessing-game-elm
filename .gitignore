@@ -2,8 +2,8 @@
 # Project-specific gitignore file.  See gitignore(5) manual for more
 # information.
 
-# elm-package generated file
+# Elm package directory
 elm-stuff
 
-# elm-repl generated file
+# Elm REPL file
 repl-temp-*
